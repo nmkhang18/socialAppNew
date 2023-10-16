@@ -1,0 +1,38 @@
+{
+    "development": {
+        "username": "postgres",
+        "database": "postgres",
+        "password": "Khang_220901",
+        "host": "db.bynwtsqcoqqqbwnjlrfc.supabase.co",
+        "dialect": "postgres",
+        "logging": false,
+        "dialectOptions": {
+            "useUTC": false
+        },
+        "timezone": "+07:00"
+    },
+    "test": {
+        "username": "postgres",
+        "database": "postgres",
+        "password": "Khang_220901",
+        "host": "db.bynwtsqcoqqqbwnjlrfc.supabase.co",
+        "dialect": "postgres",
+        "logging": false,
+        "dialectOptions": {
+            "useUTC": false
+        },
+        "timezone": "+07:00"
+    },
+    "production": {
+        "username": "postgres",
+        "database": "postgres",
+        "password": "Khang_220901",
+        "host": "db.bynwtsqcoqqqbwnjlrfc.supabase.co",
+        "dialect": "postgres",
+        "logging": false,
+        "dialectOptions": {
+            "useUTC": false
+        },
+        "timezone": "+07:00"
+    }
+}
