@@ -65,6 +65,10 @@ class postServices {
                         'LIKES',
                     ],
                     [
+                        sequelize.literal(`COALESCE((SELECT COUNT("COMMENT"."POST_ID") FROM "COMMENT" WHERE "COMMENT"."POST_ID" = "POST"."ID" GROUP BY "POST"."ID"), 0)`),
+                        'COMMENTS',
+                    ],
+                    [
                         sequelize.literal(`COALESCE((SELECT COUNT("LIKE"."POST_ID") FROM "LIKE" WHERE "LIKE"."POST_ID" = "POST"."ID" AND "LIKE"."USER_ID" = '${userId}' GROUP BY "POST"."ID"), 0)`),
                         'ISLIKED',
                     ],
@@ -147,19 +151,37 @@ class postServices {
                 }
             })
             await result.destroy()
-            return 1
+            return {
+                code: StatusCodes.OK,
+                status: ReasonPhrases.OK,
+                message: "",
+                result: null
+            }
         } catch (error) {
-            console.log(error.message);
-            return 0
+            return {
+                code: StatusCodes.INTERNAL_SERVER_ERROR,
+                status: ReasonPhrases.INTERNAL_SERVER_ERROR,
+                message: "",
+                result: null
+            }
         }
     }
     async comment(cmt) {
         try {
             await db.COMMENT.create(cmt)
-            return 1
+            return {
+                code: StatusCodes.CREATED,
+                status: ReasonPhrases.CREATED,
+                message: "",
+                result: null
+            }
         } catch (error) {
-            console.log(error.message);
-            return 0
+            return {
+                code: StatusCodes.INTERNAL_SERVER_ERROR,
+                status: ReasonPhrases.INTERNAL_SERVER_ERROR,
+                message: "",
+                result: null
+            }
         }
     }
     async getComment(post_id) {

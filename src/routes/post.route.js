@@ -14,6 +14,7 @@ router.get('/user/:user_id', postController.getPostByUser)
 //POST
 router.post('/', authencation.login, postController.createPost)
 router.post('/comment/:post_id/:comment_id', authencation.login, postController.commentPost)
+router.post('/comment/:post_id/', authencation.login, postController.commentPost)
 router.delete('/like/:id', authencation.login, postController.unlikePost)
 router.post('/like/:id', authencation.login, postController.likePost)
 
