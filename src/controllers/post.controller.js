@@ -104,9 +104,15 @@ class postController {
         }
     }
     async getComment(req, res) {
-        return res.json({
-            result: await dto.getComment(req.params.post_id)
-        })
+        // return res.json({
+        //     result: await postServices.getComment(req.params.post_id)
+        // })
+        try {
+            const result = await postServices.getComment(req.params.post_id)
+            return res.status(result.code).json(result)
+        } catch (error) {
+            next(error)
+        }
     }
     async getPostByUser(req, res) {
         return res.json({

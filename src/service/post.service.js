@@ -190,10 +190,21 @@ class postServices {
                 },
                 attributes: ["ID", "POST_ID", "CONTENT", "createdAt"]
             })
-            return result
+            return {
+                code: StatusCodes.OK,
+                status: ReasonPhrases.OK,
+                message: "",
+                result: {
+                    comments: result
+                }
+            }
         } catch (error) {
-            console.log(error.message);
-            return 0
+            return {
+                code: StatusCodes.INTERNAL_SERVER_ERROR,
+                status: ReasonPhrases.INTERNAL_SERVER_ERROR,
+                message: "",
+                result: null
+            }
         }
     }
     async getPostByUser(userId, offset, limit) {
