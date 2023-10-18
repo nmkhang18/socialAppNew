@@ -1,0 +1,51 @@
+@url = https://socialappnew.onrender.com/api
+###SIGIN
+POST {{url}}/signIn
+content-type: application/json
+
+{
+    "email": "nmk2209",
+    "password": "220901"
+}
+
+###OTP
+POST {{url}}/getOTP/regist
+content-type: application/json
+
+{
+    "email": "minhkhangg18@gmail.com"
+}
+###
+POST {{url}}/getOTP/forget
+content-type: application/json
+
+{
+    "email": "minhkhangg18@gmail.com"
+}
+
+###SIGNUP
+POST {{url}}/signUp
+content-type: application/json
+
+{
+    "username": "",     
+    "fullname": "",
+    "email": "",
+    "address": "",
+    "mobile": "",
+    "password": "",
+    "re_password": "",
+    "gender": "",
+    "otp": ""
+}
+
+###RESETPASSWORD
+PUT {{url}}/resetPassword
+content-type: application/json
+
+{
+    "email": "",
+    "password": "",
+    "re_password": "",
+    "otp": ""
+}
