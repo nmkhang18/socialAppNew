@@ -150,13 +150,14 @@ class accessServices {
                     EMAIL: email
                 }
             })
-            if (checkMail.length > 0 && type == "regist") return {
+            console.log(checkMail);
+            if (checkMail && type == "regist") return {
                 code: StatusCodes.CONFLICT,
                 status: ReasonPhrases.CONFLICT,
                 message: "Email existed",
                 result: null
             }
-            else if (checkMail.length == 0 && type == "forget") return {
+            else if (!checkMail && type == "forget") return {
                 code: StatusCodes.NON_AUTHORITATIVE_INFORMATION,
                 status: ReasonPhrases.NON_AUTHORITATIVE_INFORMATION,
                 message: "Email not existed",
