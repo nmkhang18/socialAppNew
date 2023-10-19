@@ -13,8 +13,15 @@ class accessController {
             next(error)
         }
     }
-
-    async signUp(req, res) {
+    async verifyOTP(req, res, next) {
+        try {
+            const result = await accessServices.verifyOTP(req.body)
+            return res.status(result.code).json(result)
+        } catch (error) {
+            next(error)
+        }
+    }
+    async signUp(req, res, next) {
         try {
             const result = await accessServices.signUp(req.body)
             return res.status(result.code).json(result)
@@ -30,7 +37,7 @@ class accessController {
             next(error)
         }
     }
-    async resetPassword(req, res) {
+    async resetPassword(req, res, next) {
         try {
             const result = await accessServices.resetPassword(req.body)
             return res.status(result.code).json(result)

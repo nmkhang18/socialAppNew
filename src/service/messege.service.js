@@ -43,14 +43,31 @@ class messageServices {
     }
     async createMessege(user_id, con_id, type, content) {
         try {
-            await db.MESSEGES.create({
+            const messege = {
                 ID: createId(),
                 SEND_USER_ID: user_id,
                 CONVERSATION_ID: con_id,
                 TYPE: type,
                 CONTENT: content
+            }
+            await db.MESSEGES.create(messege)
+            let users = await db.USER_CONVERSATION.findAll({
+                where: {
+                    CONVERSATION_ID: con_id
+                }
             })
-            global._io
+            users = users.map(data => {
+                return data.dataValues.USER_ID
+            })
+            let sockets = await db.USER_SOCKET.findAll({
+                USER_ID: user_id
+            })
+            sockets = sockets.map(data => {
+                return data.dataValues.SOCKET_ID
+            })
+            sockets.forEach(element => {
+                global._io.to(element).emit("new-messege", messege);
+            });
             return {
                 code: StatusCodes.CREATED,
                 status: ReasonPhrases.CREATED,
@@ -58,6 +75,7 @@ class messageServices {
                 result: null
             }
         } catch (error) {
+            console.log(error);
             return {
                 code: StatusCodes.SERVICE_UNAVAILABLE,
                 status: ReasonPhrases.SERVICE_UNAVAILABLE,
@@ -73,7 +91,7 @@ class messageServices {
                 await db.USER_CONVERSATION.bulkCreate(users, { transaction: t })
             })
             return {
-                code: StatusCodes.CR,
+                code: StatusCodes.CREATED,
                 status: ReasonPhrases.CREATED,
                 message: "",
                 result: null

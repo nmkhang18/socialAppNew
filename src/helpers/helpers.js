@@ -41,7 +41,6 @@ sendEmail = async (toEmail, otp) => {
             text: `Your OTP is: ${otp}`, // plain text body
             html: `<b>Your OTP is: </b> ${otp}`, // html body
         });
-
         if (!info.accepted) {
             return 1
         }

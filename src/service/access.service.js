@@ -119,9 +119,26 @@ class accessServices {
     }
     async verifyOTP({ email, otp }) {
         try {
-
+            const checkOTP = await otp.find({ email }).lean()
+            if (!bcrypt.compareSync(otp, checkOTP[checkOTP.length - 1].otp)) return {
+                code: StatusCodes.NON_AUTHORITATIVE_INFORMATION,
+                status: ReasonPhrases.NON_AUTHORITATIVE_INFORMATION,
+                message: "Incorrect OTP",
+                result: null
+            }
+            return {
+                code: StatusCodes.CONTINUE,
+                status: ReasonPhrases.CONTINUE,
+                message: "Verified",
+                result: null
+            }
         } catch (error) {
-
+            return {
+                code: StatusCodes.SERVICE_UNAVAILABLE,
+                status: ReasonPhrases.SERVICE_UNAVAILABLE,
+                message: error.message,
+                result: null
+            }
         }
     }
     async getOTP({ email }, type) {
@@ -149,7 +166,7 @@ class accessServices {
                 otp: optDetail.hashOtp,
             })
             console.log(optDetail);
-            // sendSMS(optDetail.otp, phone)
+            sendEmail(email, optDetail.otp)
             return {
                 code: StatusCodes.OK,
                 status: ReasonPhrases.OK,

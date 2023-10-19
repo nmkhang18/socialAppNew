@@ -15,7 +15,7 @@ const config = {
   "password": process.env.PGPASSWORD,
   "host": process.env.PGHOST,
   "dialect": "postgres",
-  "logging": true,
+  "logging": false,
   "dialectOptions": {
     "useUTC": false
   },

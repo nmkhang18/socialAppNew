@@ -6,16 +6,6 @@ const { createId, uploadDrive } = require('../helpers/helpers')
 
 class messegeController {
     async getConv(req, res) {
-        // try {
-        //     return res.json({
-        //         result: await messageServices.getConv(req.user._id)
-        //     })
-        // } catch (error) {
-        //     console.log(error.message);
-        //     return res.json({
-        //         success: false
-        //     })
-        // }
         try {
             const result = await messageServices.getConv(req.user._id)
             return res.status(result.code).json(result)
@@ -43,7 +33,7 @@ class messegeController {
             next(error)
         }
     }
-    async createMessege(req, res) {
+    async createMessege(req, res, next) {
         try {
             if (req.body.type == 'text') {
                 const result = await messageServices.createMessege(req.user._id, req.params.conversationId, req.body.type, req.body.content)
@@ -56,6 +46,8 @@ class messegeController {
                 const image = await uploadDrive(req.files.file.data)
                 const result = await messageServices.createMessege(req.user._id, req.params.conversationId, req.body.type, image)
                 return res.status(result.code).json(result)
+            } else {
+                next({ status: 503, message: "Service Unavailable" })
             }
         } catch (error) {
             next(error)

@@ -83,9 +83,12 @@ class postController {
         }
     }
     async getPostByUser(req, res) {
-        return res.json({
-            result: await dto.getPostByUser(req.params.user_id)
-        })
+        try {
+            const result = await postServices.getPostByUser(req.params.post_id)
+            return res.status(result.code).json(result)
+        } catch (error) {
+            next(error)
+        }
     }
 }
 

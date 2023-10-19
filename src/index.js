@@ -8,9 +8,9 @@ require('dotenv').config()
 require('./configs/connectMonggo')
 require('./configs/connectDB')
 
-// const { connectMailer } = require('./configs/mailerConfig')
+const { connectMailer } = require('./configs/mailerConfig')
 const { connectDrive } = require('./configs/uploadDrive')
-const SocketServer = require('./socket')
+const { SocketServer, authenMiddleware } = require('./socket')
 //app & port
 //==========================================================
 const app = express()
@@ -52,7 +52,7 @@ const io = require('socket.io')(http, {
 })
 global._io = io
 
-io.use().on('connection', socket => {
+io.use(authenMiddleware).on('connection', socket => {
     SocketServer(socket)
 })
 //==========================================================
