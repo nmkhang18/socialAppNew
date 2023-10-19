@@ -78,7 +78,7 @@ class accessServices {
                 },
                 attributes: ["USERNAME", "EMAIL", "MOBILE"]
             })
-            if (checkUser.length > 0) return {
+            if (checkUser) return {
                 code: StatusCodes.CONFLICT,
                 status: ReasonPhrases.CONFLICT,
                 message: "",
