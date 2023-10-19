@@ -78,7 +78,7 @@ class accessServices {
                 },
                 attributes: ["USERNAME", "EMAIL", "MOBILE"]
             })
-            if (checkUser) return {
+            if (checkUser.length > 0) return {
                 code: StatusCodes.CONFLICT,
                 status: ReasonPhrases.CONFLICT,
                 message: "",
@@ -150,13 +150,13 @@ class accessServices {
                     EMAIL: email
                 }
             })
-            if (checkMail && type == "regist") return {
+            if (checkMail.length > 0 && type == "regist") return {
                 code: StatusCodes.CONFLICT,
                 status: ReasonPhrases.CONFLICT,
                 message: "Email existed",
                 result: null
             }
-            else if (!checkMail && type == "forget") return {
+            else if (checkMail.length == 0 && type == "forget") return {
                 code: StatusCodes.NON_AUTHORITATIVE_INFORMATION,
                 status: ReasonPhrases.NON_AUTHORITATIVE_INFORMATION,
                 message: "Email not existed",
