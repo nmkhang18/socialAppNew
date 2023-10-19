@@ -119,16 +119,18 @@ class accessServices {
     }
     async verifyOTP({ email, otp }) {
         try {
-            const checkOTP = await otp.find({ email }).lean()
-            if (!bcrypt.compareSync(otp, checkOTP[checkOTP.length - 1].otp)) return {
+            const checkOTP = await otpSchema.find({ email }).lean()
+            console.log(checkOTP[checkOTP.length - 1]);
+            if (!bcrypt.compareSync(otp, checkOTP.length > 0 ? checkOTP[checkOTP.length - 1].otp : "0")) return {
                 code: StatusCodes.NON_AUTHORITATIVE_INFORMATION,
                 status: ReasonPhrases.NON_AUTHORITATIVE_INFORMATION,
                 message: "Incorrect OTP",
                 result: null
             }
-            return {
-                code: StatusCodes.CONTINUE,
-                status: ReasonPhrases.CONTINUE,
+
+            else return {
+                code: StatusCodes.OK,
+                status: ReasonPhrases.OK,
                 message: "Verified",
                 result: null
             }

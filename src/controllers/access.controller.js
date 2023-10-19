@@ -16,6 +16,7 @@ class accessController {
     async verifyOTP(req, res, next) {
         try {
             const result = await accessServices.verifyOTP(req.body)
+            console.log(result);
             return res.status(result.code).json(result)
         } catch (error) {
             next(error)

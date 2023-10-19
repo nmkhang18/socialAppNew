@@ -32,7 +32,7 @@ class AccessSchemaValidation {
     }
     verifyOTP(data) {
         const schema = Joi.object({
-            email: Joi.string().length(10).pattern(/^[0-9]+$/),
+            email: Joi.string().min(5).required(),
             otp: Joi.string().length(6).pattern(/^[0-9]+$/),
         })
         return schema.validate(data)
