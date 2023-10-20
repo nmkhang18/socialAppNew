@@ -50,7 +50,7 @@ class messageServices {
                 TYPE: type,
                 CONTENT: content
             }
-            await db.MESSEGES.create(messege)
+            const createdMessege = await db.MESSEGES.create(messege)
             let users = await db.USER_CONVERSATION.findAll({
                 where: {
                     CONVERSATION_ID: con_id
@@ -68,8 +68,7 @@ class messageServices {
                 return data.dataValues.SOCKET_ID
             })
             sockets.forEach(element => {
-                console.log(element);
-                global._io.to(element).emit("new-messege", messege);
+                global._io.to(element).emit("new-messege", createdMessege);
             });
             return {
                 code: StatusCodes.CREATED,
