@@ -60,7 +60,9 @@ class messageServices {
                 return data.dataValues.USER_ID
             })
             let sockets = await db.USER_SOCKET.findAll({
-                USER_ID: user_id
+                where: {
+                    USER_ID: user_id
+                }
             })
             sockets = sockets.map(data => {
                 return data.dataValues.SOCKET_ID
