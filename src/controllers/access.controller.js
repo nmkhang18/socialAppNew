@@ -40,7 +40,7 @@ class accessController {
     }
     async resetPassword(req, res, next) {
         try {
-            const result = await accessServices.resetPassword(req.body)
+            const result = await accessServices.savePassword(req.body)
             return res.status(result.code).json(result)
         } catch (error) {
             next(error)

@@ -9,7 +9,7 @@ const authenMiddleware = (socket, next) => {
 
             next()
         } catch (error) {
-            next(new Error('authen failed'));
+            console.log(error);
         }
     } else {
         console.log('token not found');

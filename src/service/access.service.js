@@ -185,7 +185,7 @@ class accessServices {
             }
         }
     }
-    async savePassword({ email, password }) {
+    async savePassword({ email, password, otp }) {
         try {
             const checkOTP = await otpSchema.find({ email }).lean()
 
@@ -202,6 +202,7 @@ class accessServices {
             })
             const salt = await bcrypt.genSaltSync(10)
             const hashPassword = await bcrypt.hash(password, salt)
+            console.log(result);
             result.PASSWORD = hashPassword
             await result.save()
             return {
