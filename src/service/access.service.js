@@ -23,7 +23,7 @@ class accessServices {
                         { EMAIL: email }
                     ]
                 },
-                attributes: ["ID", "USERNAME", "FULLNAME", "AVARTAR"]
+                attributes: ["ID", "USERNAME", "FULLNAME", "AVATAR"]
             })
             if (!user) return {
                 code: StatusCodes.NON_AUTHORITATIVE_INFORMATION,
