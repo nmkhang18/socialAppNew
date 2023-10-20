@@ -22,7 +22,8 @@ class accessServices {
                         { USERNAME: email },
                         { EMAIL: email }
                     ]
-                }
+                },
+                attributes: ["ID", "USERNAME", "FULLNAME", "AVARTAR"]
             })
             if (!user) return {
                 code: StatusCodes.NON_AUTHORITATIVE_INFORMATION,
@@ -47,7 +48,7 @@ class accessServices {
                 code: StatusCodes.ACCEPTED,
                 status: ReasonPhrases.ACCEPTED,
                 message: "",
-                result: { token }
+                result: { token, user }
             }
         } catch (error) {
             return {

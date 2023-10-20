@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken';
 
 const authenMiddleware = (socket, next) => {
-    console.log('Authen...');
+    console.log('Authen...', socket.handshake.query);
     if (socket.handshake.query?.token) {
         const token = socket.handshake.query.token;
         try {
@@ -10,10 +10,12 @@ const authenMiddleware = (socket, next) => {
             next()
         } catch (error) {
             console.log(error);
+            return
         }
     } else {
-        console.log('token not found');
-        next(new Error('Authentication error'));
+        console.log('Token not found');
+        return
+        // next(new Error('Authentication error'));
     }
 };
 
