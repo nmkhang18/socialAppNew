@@ -68,6 +68,7 @@ class messageServices {
                 return data.dataValues.SOCKET_ID
             })
             sockets.forEach(element => {
+                console.log(element);
                 global._io.to(element).emit("new-messege", messege);
             });
             return {
