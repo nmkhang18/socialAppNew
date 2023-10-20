@@ -4,7 +4,12 @@ const { sequelize } = require('../models/index')
 const Op = Sequelize.Op
 const { otpTimeOut, sendEmail } = require('../helpers/helpers')
 const bcrypt = require('bcryptjs')
-
+const {
+    ReasonPhrases,
+    StatusCodes,
+    getReasonPhrase,
+    getStatusCode,
+} = require('http-status-codes')
 class userServices {
     async saveChange(user) {
         try {
@@ -18,10 +23,19 @@ class userServices {
             result.DESCRIPTION = user.description
 
             await result.save()
-            return 1
+            return {
+                code: StatusCodes.OK,
+                status: ReasonPhrases.OK,
+                message: "",
+                result: null
+            }
         } catch (error) {
-            console.log(error.message);
-            return 0
+            return {
+                code: StatusCodes.SERVICE_UNAVAILABLE,
+                status: ReasonPhrases.SERVICE_UNAVAILABLE,
+                message: error.message,
+                result: null
+            }
         }
     }
     async saveAvatar(user_id, img) {
@@ -30,25 +44,53 @@ class userServices {
             if (!result) return 0
             result.AVATAR = img
             await result.save()
-            return 1
+            return {
+                code: StatusCodes.OK,
+                status: ReasonPhrases.OK,
+                message: "",
+                result: null
+            }
         } catch (error) {
-            console.log(error);
-            return 0
+            return {
+                code: StatusCodes.SERVICE_UNAVAILABLE,
+                status: ReasonPhrases.SERVICE_UNAVAILABLE,
+                message: error.message,
+                result: null
+            }
         }
     }
     async newPassword(user_id, old_p, new_p) {
         try {
             const result = await db.USER.findByPk(user_id)
-            if (!result) return 0
+            if (!result) return {
+                code: StatusCodes.NON_AUTHORITATIVE_INFORMATION,
+                status: ReasonPhrases.NON_AUTHORITATIVE_INFORMATION,
+                message: "",
+                result: null
+            }
             if (bcrypt.compareSync(old_p, result.PASSWORD)) {
                 result.PASSWORD = new_p
                 await result.save()
-                return 1
+                return {
+                    code: StatusCodes.OK,
+                    status: ReasonPhrases.OK,
+                    message: "",
+                    result: null
+                }
             }
-            return 0
+            return {
+                code: StatusCodes.NON_AUTHORITATIVE_INFORMATION,
+                status: ReasonPhrases.NON_AUTHORITATIVE_INFORMATION,
+                message: "",
+                result: null
+            }
         } catch (error) {
-            console.log(error.message);
-            return 2
+            return {
+                code: StatusCodes.SERVICE_UNAVAILABLE,
+                status: ReasonPhrases.SERVICE_UNAVAILABLE,
+                message: error.message,
+                result: null
+            }
         }
     }
     async follow(user_id, followed_user_id) {
@@ -57,10 +99,19 @@ class userServices {
                 FOLLOWING_USER_ID: user_id,
                 FOLLOWED_USER_ID: followed_user_id
             })
-            return 1
+            return {
+                code: StatusCodes.OK,
+                status: ReasonPhrases.OK,
+                message: "",
+                result: null
+            }
         } catch (error) {
-            console.log(error.message);
-            return 0
+            return {
+                code: StatusCodes.SERVICE_UNAVAILABLE,
+                status: ReasonPhrases.SERVICE_UNAVAILABLE,
+                message: error.message,
+                result: null
+            }
         }
     }
     async unfollow(user_id, followed_user_id) {
@@ -72,10 +123,19 @@ class userServices {
                 }
             })
             await result.destroy()
-            return 1
+            return {
+                code: StatusCodes.OK,
+                status: ReasonPhrases.OK,
+                message: "",
+                result: null
+            }
         } catch (error) {
-            console.log(error.message);
-            return 0
+            return {
+                code: StatusCodes.SERVICE_UNAVAILABLE,
+                status: ReasonPhrases.SERVICE_UNAVAILABLE,
+                message: error.message,
+                result: null
+            }
         }
     }
     async getUserInfo(user_id, id) {
@@ -109,10 +169,21 @@ class userServices {
                     ],
                 ]
             })
-            return result
+            return {
+                code: StatusCodes.OK,
+                status: ReasonPhrases.OK,
+                message: "",
+                result: {
+                    user: result
+                }
+            }
         } catch (error) {
-            console.log(error.message);
-            return 0
+            return {
+                code: StatusCodes.SERVICE_UNAVAILABLE,
+                status: ReasonPhrases.SERVICE_UNAVAILABLE,
+                message: error.message,
+                result: null
+            }
         }
     }
     async search(username, id) {
@@ -138,10 +209,21 @@ class userServices {
                 }
             })
 
-            return result
+            return {
+                code: StatusCodes.OK,
+                status: ReasonPhrases.OK,
+                message: "",
+                result: {
+                    user: result
+                }
+            }
         } catch (error) {
-            console.log(error.message);
-            return 0
+            return {
+                code: StatusCodes.SERVICE_UNAVAILABLE,
+                status: ReasonPhrases.SERVICE_UNAVAILABLE,
+                message: error.message,
+                result: null
+            }
         }
     }
 }

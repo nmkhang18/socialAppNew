@@ -1,6 +1,6 @@
 const Joi = require('joi')
 
-class valadator {
+class UserSchemaValidation {
     updateUser(data) {
         const schema = Joi.object({
             username: Joi.string().min(6).required(),
@@ -22,4 +22,4 @@ class valadator {
     }
 }
 
-module.exports = new valadator
+module.exports = new UserSchemaValidation
