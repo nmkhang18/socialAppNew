@@ -11,9 +11,9 @@ const {
     getStatusCode,
 } = require('http-status-codes')
 class messageServices {
-    async getMessege(id, offset, limit) {
+    async getMessege(id, offset, limit, user_id) {
         try {
-            const result = await db.MESSEGES.findAll({
+            let result = await db.MESSEGES.findAll({
                 where: {
                     CONVERSATION_ID: id
                 },
@@ -22,6 +22,12 @@ class messageServices {
                 ],
                 offset: offset,
                 limit: limit
+            })
+            result = result.map(e => {
+                if (e.dataValues.SEND_USER_ID == user_id) e.dataValues.IS_SEND_USER = 1
+                else e.dataValues.IS_SEND_USER = 0
+                console.log(e);
+                return e
             })
             return {
                 code: StatusCodes.OK,

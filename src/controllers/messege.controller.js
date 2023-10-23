@@ -27,7 +27,7 @@ class messegeController {
     async getMessege(req, res, next) {
         const { page } = req.query
         try {
-            const result = await messageServices.getMessege(req.params.conversationId, parseInt(page) * 5, 5)
+            const result = await messageServices.getMessege(req.params.conversationId, parseInt(page) * 5, 5, req.user._id)
             return res.status(result.code).json(result)
         } catch (error) {
             next(error)
