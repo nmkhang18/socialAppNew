@@ -19,7 +19,7 @@ router.get('/notification', authencation.login, controller.notification)
 
 //PUT
 router.put('/', authencation.login, userValidator.updateUser, controller.updateInfomation)
-router.put('/avatar', authencation.login, userValidator.updateUser, controller.updateAvatar)
+router.put('/avatar', authencation.login, controller.updateAvatar)
 router.put('/avatar/default', authencation.login, controller.defaultAvatar)
 router.put('/password', authencation.login, userValidator.changePassword, controller.updatePassword)
 
