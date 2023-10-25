@@ -19,11 +19,25 @@ class postController {
             }
             let images = []
             if (req.files) {
+                console.log(req.files.file);
                 if (typeof (req.files.file.length) == "number") {
+
                     for (let i = 0; i < req.files.file.length; i++) {
+                        if (req.files.file[i].mimetype.split('/')[0] != "image") return res.json({
+                            code: "",
+                            status: "",
+                            message: "File must be image",
+                            result: null
+                        })
                         images.push({ IMAGE: await uploadDrive(req.files.file[i].data), POST_ID: id })
                     }
                 } else {
+                    if (req.files.file.mimetype.split('/')[0] != "image") return res.json({
+                        code: "",
+                        status: "",
+                        message: "File must be image",
+                        result: null
+                    })
                     images.push({ IMAGE: await uploadDrive(req.files.file.data), POST_ID: id })
                 }
             }

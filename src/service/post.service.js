@@ -302,6 +302,24 @@ class postServices {
             }
         }
     }
+    async updatePost(id, post) {
+        try {
+            const post = await db.POST.findByPk(id)
+            return {
+                code: StatusCodes.CREATED,
+                status: ReasonPhrases.CREATED,
+                message: "",
+                result: null
+            }
+        } catch (error) {
+            return {
+                code: StatusCodes.INTERNAL_SERVER_ERROR,
+                status: ReasonPhrases.INTERNAL_SERVER_ERROR,
+                message: "",
+                result: null
+            }
+        }
+    }
 }
 
 module.exports = new postServices
