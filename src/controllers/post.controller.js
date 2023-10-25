@@ -24,8 +24,8 @@ class postController {
 
                     for (let i = 0; i < req.files.file.length; i++) {
                         if (req.files.file[i].mimetype.split('/')[0] != "image") return res.json({
-                            code: "",
-                            status: "",
+                            code: 0,
+                            status: 0,
                             message: "File must be image",
                             result: null
                         })
@@ -33,8 +33,8 @@ class postController {
                     }
                 } else {
                     if (req.files.file.mimetype.split('/')[0] != "image") return res.json({
-                        code: "",
-                        status: "",
+                        code: 0,
+                        status: 0,
                         message: "File must be image",
                         result: null
                     })

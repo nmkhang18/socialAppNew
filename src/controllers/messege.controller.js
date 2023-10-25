@@ -48,8 +48,8 @@ class messegeController {
                     message: 'No image'
                 })
                 if (req.files.file.mimetype.split('/')[0] != "image") return res.json({
-                    code: "",
-                    status: "",
+                    code: 0,
+                    status: 0,
                     message: "File must be image",
                     result: null
                 })
