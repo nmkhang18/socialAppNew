@@ -47,6 +47,12 @@ class messegeController {
                     status: 0,
                     message: 'No image'
                 })
+                if (req.files.file.mimetype.split('/')[0] != "image") return res.json({
+                    code: "",
+                    status: "",
+                    message: "File must be image",
+                    result: null
+                })
                 const image = await uploadDrive(req.files.file.data)
                 const result = await messageServices.createMessege(req.user._id, req.params.conversationId, req.body.type, image)
                 // return res.status(result.code).json(result)
