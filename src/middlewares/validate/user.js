@@ -9,7 +9,7 @@ const {
 class userValidator {
     static updateUser = (req, res, next) => {
         const { error } = UserSchemaValidation.updateUser(req.body)
-        if (error) return res.status(StatusCodes.NOT_ACCEPTABLE).json({
+        if (error) return res.json({
             code: StatusCodes.NOT_ACCEPTABLE,
             status: ReasonPhrases.NOT_ACCEPTABLE,
             message: error.message,
@@ -19,7 +19,7 @@ class userValidator {
     }
     static changePassword = (req, res, next) => {
         const { error } = UserSchemaValidation.changePassword(req.body)
-        if (error) return res.status(StatusCodes.NOT_ACCEPTABLE).json({
+        if (error) return res.json({
             code: StatusCodes.NOT_ACCEPTABLE,
             status: ReasonPhrases.NOT_ACCEPTABLE,
             message: error.message,
@@ -28,7 +28,7 @@ class userValidator {
         next();
     }
     static updateAvatar = (req, res, next) => {
-        if (!req.files.file) return res.status(StatusCodes.NOT_ACCEPTABLE).json({
+        if (!req.files.file) return res.json({
             code: StatusCodes.NOT_ACCEPTABLE,
             status: ReasonPhrases.NOT_ACCEPTABLE,
             message: "image required",

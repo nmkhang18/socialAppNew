@@ -9,7 +9,7 @@ const {
 class accessValidator {
     static getOTP = (req, res, next) => {
         const { error } = AccessSchemaValidation.getOTP(req.body)
-        if (error) return res.status(StatusCodes.NOT_ACCEPTABLE).json({
+        if (error) return res.json({
             code: StatusCodes.NOT_ACCEPTABLE,
             status: ReasonPhrases.NOT_ACCEPTABLE,
             message: error.message,
@@ -19,7 +19,7 @@ class accessValidator {
     }
     static verifyOTP = (req, res, next) => {
         const { error } = AccessSchemaValidation.verifyOTP(req.body)
-        if (error) return res.status(StatusCodes.NOT_ACCEPTABLE).json({
+        if (error) return res.json({
             code: StatusCodes.NOT_ACCEPTABLE,
             status: ReasonPhrases.NOT_ACCEPTABLE,
             message: error.message,
@@ -29,7 +29,7 @@ class accessValidator {
     }
     static signUp = (req, res, next) => {
         const { error } = AccessSchemaValidation.signUp(req.body)
-        if (error) return res.status(StatusCodes.NOT_ACCEPTABLE).json({
+        if (error) return res.json({
             code: StatusCodes.NOT_ACCEPTABLE,
             status: ReasonPhrases.NOT_ACCEPTABLE,
             message: error.message,
@@ -39,7 +39,7 @@ class accessValidator {
     }
     static signIn = (req, res, next) => {
         const { error } = AccessSchemaValidation.signIn(req.body)
-        if (error) return res.status(StatusCodes.NOT_ACCEPTABLE).json({
+        if (error) return res.json({
             code: StatusCodes.NOT_ACCEPTABLE,
             status: ReasonPhrases.NOT_ACCEPTABLE,
             message: error.message,
@@ -49,7 +49,7 @@ class accessValidator {
     }
     static resetPassword = (req, res, next) => {
         const { error } = AccessSchemaValidation.resetPassword(req.body)
-        if (error) return res.status(StatusCodes.NOT_ACCEPTABLE).json({
+        if (error) return res.json({
             code: StatusCodes.NOT_ACCEPTABLE,
             status: ReasonPhrases.NOT_ACCEPTABLE,
             message: error.message,
