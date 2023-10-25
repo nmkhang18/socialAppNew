@@ -18,7 +18,8 @@ class controller {
         })
         try {
             const result = await userServices.saveAvatar(req.user._id, img)
-            return res.status(result.code).json(result)
+            // return res.status(result.code).json(result)
+            return res.json(result)
         } catch (error) {
             next(error)
         }
@@ -27,7 +28,8 @@ class controller {
         const img = 'https://drive.google.com/uc?export=view&id=1ykzTh94lBOt09jupQcdLeG1NflVo5jiq'
         try {
             const result = await userServices.saveAvatar(req.user._id, img)
-            return res.status(result.code).json(result)
+            // return res.status(result.code).json(result)
+            return res.json(result)
         } catch (error) {
             next(error)
         }
@@ -36,7 +38,8 @@ class controller {
         req.body.id = req.user._id
         try {
             const result = await userServices.saveChange(req.body)
-            return res.status(result.code).json(result)
+            // return res.status(result.code).json(result)
+            return res.json(result)
         } catch (error) {
             next(error)
         }
@@ -46,7 +49,8 @@ class controller {
             const salt = await bcrypt.genSaltSync(10)
             const hashPassword = await bcrypt.hash(req.body.n_password, salt)
             const result = await userServices.newPassword(req.user._id, req.body.password, hashPassword)
-            return res.status(result.code).json(result)
+            // return res.status(result.code).json(result)
+            return res.json(result)
         } catch (error) {
             next(error)
         }
@@ -54,7 +58,8 @@ class controller {
     async follow(req, res) {
         try {
             const result = await userServices.follow(req.user._id, req.params.id)
-            return res.status(result.code).json(result)
+            // return res.status(result.code).json(result)
+            return res.json(result)
         } catch (error) {
             next(error)
         }
@@ -62,7 +67,8 @@ class controller {
     async unfollow(req, res) {
         try {
             const result = await userServices.unfollow(req.user._id, req.params.id)
-            return res.status(result.code).json(result)
+            // return res.status(result.code).json(result)
+            return res.json(result)
         } catch (error) {
             next(error)
         }
@@ -70,7 +76,8 @@ class controller {
     async getUserInfo(req, res) {
         try {
             const result = await userServices.getUserInfo(req.params.id, req.user._id)
-            return res.status(result.code).json(result)
+            // return res.status(result.code).json(result)
+            return res.json(result)
         } catch (error) {
             next(error)
         }
@@ -78,7 +85,8 @@ class controller {
     async search(req, res) {
         try {
             const result = await userServices.search(req.query.username, req.user._id)
-            return res.status(result.code).json(result)
+            // return res.status(result.code).json(result)
+            return res.json(result)
         } catch (error) {
             next(error)
         }
@@ -89,7 +97,8 @@ class controller {
         // })
         // try {
         //     const result = await userServices.getNoti(req.user._id)
-        //     return res.status(result.code).json(result)
+        return res.status(result.code).json(result)
+        return res.json(result)
         // } catch (error) {
         //     next(error)
         // }

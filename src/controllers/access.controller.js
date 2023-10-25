@@ -8,7 +8,8 @@ class accessController {
     async signIn(req, res, next) {
         try {
             const result = await accessServices.signIn(req.body)
-            return res.status(result.code).json(result)
+            // return res.status(result.code).json(result)
+            return res.json(result)
         } catch (error) {
             next(error)
         }
@@ -17,7 +18,8 @@ class accessController {
         try {
             const result = await accessServices.verifyOTP(req.body)
             console.log(result);
-            return res.status(result.code).json(result)
+            // return res.status(result.code).json(result)
+            return res.json(result)
         } catch (error) {
             next(error)
         }
@@ -25,7 +27,8 @@ class accessController {
     async signUp(req, res, next) {
         try {
             const result = await accessServices.signUp(req.body)
-            return res.status(result.code).json(result)
+            // return res.status(result.code).json(result)
+            return res.json(result)
         } catch (error) {
             next(error)
         }
@@ -33,7 +36,8 @@ class accessController {
     async getOTP(req, res, next) {
         try {
             const result = await accessServices.getOTP(req.body, req.params.type)
-            return res.status(result.code).json(result)
+            // return res.status(result.code).json(result)
+            return res.json(result)
         } catch (error) {
             next(error)
         }
@@ -41,7 +45,8 @@ class accessController {
     async resetPassword(req, res, next) {
         try {
             const result = await accessServices.savePassword(req.body)
-            return res.status(result.code).json(result)
+            // return res.status(result.code).json(result)
+            return res.json(result)
         } catch (error) {
             next(error)
         }

@@ -6,7 +6,8 @@ class controller {
     async getNewfeeds(req, res, next) {
         try {
             const result = await postServices.getPost(req.user._id, 1, 1)
-            return res.status(result.code).json(result)
+            // return res.status(result.code).json(result)
+            return res.json(result)
         } catch (error) {
             next(error)
         }

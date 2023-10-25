@@ -28,7 +28,8 @@ class postController {
                 }
             }
             const result = await postServices.savePost(post, images)
-            return res.status(result.code).json(result)
+            // return res.status(result.code).json(result)
+            return res.json(result)
         } catch (error) {
             next(error)
         }
@@ -43,7 +44,8 @@ class postController {
     async likePost(req, res) {
         try {
             const result = await postServices.likePost(req.user._id, req.params.id)
-            return res.status(result.code).json(result)
+            // return res.status(result.code).json(result)
+            return res.json(result)
         } catch (error) {
             next(error)
         }
@@ -51,7 +53,8 @@ class postController {
     async unlikePost(req, res) {
         try {
             const result = await postServices.unlikePost(req.user._id, req.params.id)
-            return res.status(result.code).json(result)
+            // return res.status(result.code).json(result)
+            return res.json(result)
         } catch (error) {
             next(error)
         }
@@ -69,7 +72,8 @@ class postController {
                 cmt.COMMENT_REPLIED_TO = req.params.comment_id
             }
             const result = await postServices.comment(cmt)
-            return res.status(result.code).json(result)
+            // return res.status(result.code).json(result)
+            return res.json(result)
         } catch (error) {
             next(error)
         }
@@ -77,7 +81,8 @@ class postController {
     async getComment(req, res) {
         try {
             const result = await postServices.getComment(req.params.post_id)
-            return res.status(result.code).json(result)
+            // return res.status(result.code).json(result)
+            return res.json(result)
         } catch (error) {
             next(error)
         }
@@ -85,7 +90,8 @@ class postController {
     async getPostByUser(req, res) {
         try {
             const result = await postServices.getPostByUser(req.params.user_id)
-            return res.status(result.code).json(result)
+            // return res.status(result.code).json(result)
+            return res.json(result)
         } catch (error) {
             next(error)
         }
