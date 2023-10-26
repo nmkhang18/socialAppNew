@@ -70,11 +70,13 @@ class messageServices {
                     USER_ID: users
                 }
             })
-            sockets = sockets.map(data => {
-                return data.dataValues.SOCKET_ID
-            })
+            // sockets = sockets.map(data => {
+            //     return data.dataValues.SOCKET_ID
+            // })
             sockets.forEach(element => {
-                global._io.to(element).emit("new-messege", createdMessege);
+                let tmpMess = createdMessege
+                tmpMess.dataValues.IS_SEND_USER = element.dataValues.USER_ID == user_id ? 1 : 0
+                global._io.to(element.dataValues.SOCKET_ID).emit("new-messege", tmpMess);
             });
             return {
                 code: StatusCodes.CREATED,
