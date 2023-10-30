@@ -226,6 +226,90 @@ class userServices {
             }
         }
     }
+    async getFollowers(user_id, id) {
+        try {
+            let flwers = await db.FOLLOWER.findAll({
+                where: {
+                    FOLLOWED_USER_ID: user_id
+                }
+            })
+            flwers = flwers.map(data => {
+                return data.dataValues.FOLLOWING_USER_ID
+            })
+            const result = await db.USER.findAll({
+                attributes: [
+                    "ID",
+                    "USERNAME",
+                    "FULLNAME",
+                    "AVATAR",
+                    [
+                        sequelize.literal(`COALESCE((SELECT COUNT("FOLLOWER"."FOLLOWED_USER_ID") FROM "FOLLOWER" WHERE "FOLLOWER"."FOLLOWED_USER_ID" = "USER"."ID" AND "FOLLOWER"."FOLLOWING_USER_ID" = '${id}' GROUP BY "FOLLOWER"."FOLLOWED_USER_ID"), 0)`),
+                        'ISFOLLOWED',
+                    ],
+                ],
+                where: {
+                    ID: flwers
+                }
+            })
+            return {
+                code: StatusCodes.OK,
+                status: ReasonPhrases.OK,
+                message: "",
+                result: {
+                    users: result
+                }
+            }
+        } catch (error) {
+            return {
+                code: StatusCodes.SERVICE_UNAVAILABLE,
+                status: ReasonPhrases.SERVICE_UNAVAILABLE,
+                message: error.message,
+                result: null
+            }
+        }
+    }
+    async getFollowed(user_id, id) {
+        try {
+            let flwers = await db.FOLLOWER.findAll({
+                where: {
+                    FOLLOWING_USER_ID: user_id
+                }
+            })
+            flwers = flwers.map(data => {
+                return data.dataValues.FOLLOWED_USER_ID
+            })
+            const result = await db.USER.findAll({
+                attributes: [
+                    "ID",
+                    "USERNAME",
+                    "FULLNAME",
+                    "AVATAR",
+                    [
+                        sequelize.literal(`COALESCE((SELECT COUNT("FOLLOWER"."FOLLOWED_USER_ID") FROM "FOLLOWER" WHERE "FOLLOWER"."FOLLOWED_USER_ID" = "USER"."ID" AND "FOLLOWER"."FOLLOWING_USER_ID" = '${id}' GROUP BY "FOLLOWER"."FOLLOWED_USER_ID"), 0)`),
+                        'ISFOLLOWED',
+                    ],
+                ],
+                where: {
+                    ID: flwers
+                }
+            })
+            return {
+                code: StatusCodes.OK,
+                status: ReasonPhrases.OK,
+                message: "",
+                result: {
+                    users: result
+                }
+            }
+        } catch (error) {
+            return {
+                code: StatusCodes.SERVICE_UNAVAILABLE,
+                status: ReasonPhrases.SERVICE_UNAVAILABLE,
+                message: error.message,
+                result: null
+            }
+        }
+    }
 }
 
 module.exports = new userServices

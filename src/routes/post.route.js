@@ -1,6 +1,8 @@
 const express = require('express')
 const postController = require('../controllers/post.controller')
 const authencation = require('../middlewares/access.middleware')
+const postMiddleware = require('../middlewares/post.middleware')
+
 
 const router = express.Router()
 
@@ -21,7 +23,7 @@ router.post('/like/:id', authencation.login, postController.likePost)
 
 
 //PUT
-router.put('/:id', postController.updatePost)
+router.put('/:id', authencation.login, postMiddleware.isAuthor, postController.updatePost)
 
 
 //DELETE

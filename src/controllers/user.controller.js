@@ -91,6 +91,24 @@ class controller {
             next(error)
         }
     }
+    async getFollowers(req, res) {
+        try {
+            const result = await userServices.getFollowers(req.params.id, req.user._id)
+            // return res.status(result.code).json(result)
+            return res.json(result)
+        } catch (error) {
+            next(error)
+        }
+    }
+    async getFollowed(req, res) {
+        try {
+            const result = await userServices.getFollowed(req.params.id, req.user._id)
+            // return res.status(result.code).json(result)
+            return res.json(result)
+        } catch (error) {
+            next(error)
+        }
+    }
     async notification(req, res) {
         // return res.json({
         //     result: await notiDTO.getNoti(req.user._id)

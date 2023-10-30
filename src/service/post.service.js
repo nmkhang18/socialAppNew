@@ -290,7 +290,7 @@ class postServices {
                 status: ReasonPhrases.OK,
                 message: "",
                 result: {
-                    comments: result
+                    newFeeds: result
                 }
             }
         } catch (error) {
@@ -302,14 +302,40 @@ class postServices {
             }
         }
     }
-    async updatePost(id, post) {
+    async updatePost(id, caption, images) {
         try {
-            const post = await db.POST.findByPk(id)
-            return {
-                code: StatusCodes.CREATED,
-                status: ReasonPhrases.CREATED,
-                message: "",
-                result: null
+            // const post = await db.POST.findByPk(id)
+            // return {
+            //     code: StatusCodes.CREATED,
+            //     status: ReasonPhrases.CREATED,
+            //     message: "",
+            //     result: null
+            // }
+            try {
+                await sequelize.transaction(async t => {
+                    const post = await db.POST.findByPk(id)
+                    post.CAPTION = caption
+                    await db.POST_IMAGE.destroy({
+                        where: {
+                            POST_ID: id
+                        }
+                    })
+                    await db.POST_IMAGE.bulkCreate(images, { transaction: t })
+                    await post.save()
+                })
+                return {
+                    code: StatusCodes.OK,
+                    status: ReasonPhrases.OK,
+                    message: "",
+                    result: null
+                }
+            } catch (error) {
+                return {
+                    code: StatusCodes.SERVICE_UNAVAILABLE,
+                    status: ReasonPhrases.SERVICE_UNAVAILABLE,
+                    message: error.message,
+                    result: null
+                }
             }
         } catch (error) {
             return {

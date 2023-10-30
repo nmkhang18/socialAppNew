@@ -50,7 +50,39 @@ class postController {
 
     }
     async updatePost(req, res) {
+        try {
+            let images = []
+            if (req.files) {
+                console.log(req.files.file);
+                if (typeof (req.files.file.length) == "number") {
 
+                    for (let i = 0; i < req.files.file.length; i++) {
+                        if (req.files.file[i].mimetype.split('/')[0] != "image" && req.files.file[i].mimetype.split('/')[0] != "multipart") return res.json({
+                            code: 0,
+                            status: 0,
+                            message: "File must be image",
+                            result: null
+                        })
+                        images.push({ IMAGE: await uploadDrive(req.files.file[i].data), POST_ID: id })
+                    }
+                } else {
+                    if (req.files.file.mimetype.split('/')[0] != "image" && req.files.file.mimetype.split('/')[0] != "multipart") return res.json({
+                        code: 0,
+                        status: 0,
+                        message: "File must be image",
+                        result: null
+                    })
+                    images.push({ IMAGE: await uploadDrive(req.files.file.data), POST_ID: id })
+                }
+            }
+            // const result = await postServices.savePost(post, images)
+            const result = await postServices.updatePost(req.params.id, req.body.caption, images)
+
+            // return res.status(result.code).json(result)
+            return res.json(result)
+        } catch (error) {
+            next(error)
+        }
     }
     async deletePost(req, res) {
 

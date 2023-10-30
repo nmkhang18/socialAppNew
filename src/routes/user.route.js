@@ -10,6 +10,10 @@ router.get('/follow/:id', authencation.login, controller.follow)
 router.get('/unfollow/:id', authencation.login, controller.unfollow)
 router.get('/info/:id', authencation.login, controller.getUserInfo)
 router.get('/search', authencation.login, controller.search)
+router.get('/followers/:id', authencation.login, controller.getFollowers)
+router.get('/followed/:id', authencation.login, controller.getFollowed)
+
+
 router.get('/notification', authencation.login, controller.notification)
 
 
