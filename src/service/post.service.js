@@ -342,7 +342,7 @@ class postServices {
                         'COMMENTS',
                     ],
                     [
-                        sequelize.literal(`saq cxa  ((SELECT COUNT("LIKE"."POST_ID") FROM "LIKE" WHERE "LIKE"."POST_ID" = "POST"."ID" AND "LIKE"."USER_ID" = '${userId}' GROUP BY "POST"."ID"), 0)`),
+                        sequelize.literal(`COALESCE((SELECT COUNT("LIKE"."POST_ID") FROM "LIKE" WHERE "LIKE"."POST_ID" = "POST"."ID" AND "LIKE"."USER_ID" = '${userId}' GROUP BY "POST"."ID"), 0)`),
                         'ISLIKED',
                     ],
                     "createdAt",
@@ -360,6 +360,7 @@ class postServices {
                 }
             }
         } catch (error) {
+            console.log(error);
             return {
                 code: StatusCodes.INTERNAL_SERVER_ERROR,
                 status: ReasonPhrases.INTERNAL_SERVER_ERROR,
