@@ -11,6 +11,35 @@ const {
 } = require('http-status-codes')
 
 class postServices {
+    async getPostDetail(id) {
+        try {
+            const result = await db.POST.findOne({
+                where: {
+                    ID: id
+                },
+                include: {
+                    model: db.POST_IMAGE,
+                    required: false,
+                    attributes: ["ID", "IMAGE"]
+                }
+            })
+            return {
+                code: StatusCodes.OK,
+                status: ReasonPhrases.OK,
+                message: "",
+                result: {
+                    post: result
+                }
+            }
+        } catch (error) {
+            return {
+                code: StatusCodes.SERVICE_UNAVAILABLE,
+                status: ReasonPhrases.SERVICE_UNAVAILABLE,
+                message: error.message,
+                result: null
+            }
+        }
+    }
     async getPost(userId, offset, limit) {
         try {
             const getFollowed = await db.FOLLOWER.findAll({
@@ -127,6 +156,20 @@ class postServices {
             })
             await db.NOTIFICATION.create({ USER_ID: user_id, R_USER_ID: post.CREATED_BY_USER_ID, POST_ID: post_id, TYPE: "like" })
 
+            let sockets = await db.USER_SOCKET.findAll({
+                where: {
+                    [Op.or]: {
+                        USER_ID: post.CREATED_BY_USER_ID,
+                    }
+                }
+            })
+            sockets.forEach(element => {
+                let tmpMess = createdMessege
+                global._io.to(element.dataValues.SOCKET_ID).emit("like", {
+                    USER_ID: user_id,
+                    POST_ID: post_id
+                });
+            });
             return {
                 code: StatusCodes.CREATED,
                 status: ReasonPhrases.CREATED,
@@ -144,13 +187,19 @@ class postServices {
     }
     async unlikePost(user_id, post_id) {
         try {
-            const result = await db.LIKE.findOne({
+            await db.LIKE.destroy({
                 where: {
                     USER_ID: user_id,
                     POST_ID: post_id
                 }
             })
-            await result.destroy()
+            await db.NOTIFICATION.destroy({
+                where: {
+                    USER_ID: user_id,
+                    POST_ID: post_id,
+                    TYPE: "like"
+                }
+            })
             return {
                 code: StatusCodes.OK,
                 status: ReasonPhrases.OK,
@@ -168,7 +217,24 @@ class postServices {
     }
     async comment(cmt) {
         try {
+            const post = await db.POST.findByPk(cmt.POST_ID)
             await db.COMMENT.create(cmt)
+            await db.NOTIFICATION.create({ USER_ID: user_id, R_USER_ID: post.CREATED_BY_USER_ID, POST_ID: cmt.POST_ID, TYPE: "comment" })
+            if (cmt.COMMENT_REPLIED_TO) {
+                await db.NOTIFICATION.create({ USER_ID: user_id, R_USER_ID: cmt.COMMENT_REPLIED_TO, POST_ID: cmt.POST_ID, TYPE: "comment" })
+            }
+            let sockets = await db.USER_SOCKET.findAll({
+                where: {
+                    [Op.or]: {
+                        USER_ID: post.CREATED_BY_USER_ID,
+                        USER_ID: cmt.COMMENT_REPLIED_TO ? cmt.COMMENT_REPLIED_TO : "-1"
+
+                    }
+                }
+            })
+            sockets.forEach(element => {
+                global._io.to(element.dataValues.SOCKET_ID).emit("comment", cmt);
+            });
             return {
                 code: StatusCodes.CREATED,
                 status: ReasonPhrases.CREATED,
@@ -276,7 +342,7 @@ class postServices {
                         'COMMENTS',
                     ],
                     [
-                        sequelize.literal(`COALESCE((SELECT COUNT("LIKE"."POST_ID") FROM "LIKE" WHERE "LIKE"."POST_ID" = "POST"."ID" AND "LIKE"."USER_ID" = '${userId}' GROUP BY "POST"."ID"), 0)`),
+                        sequelize.literal(`saq cxa  ((SELECT COUNT("LIKE"."POST_ID") FROM "LIKE" WHERE "LIKE"."POST_ID" = "POST"."ID" AND "LIKE"."USER_ID" = '${userId}' GROUP BY "POST"."ID"), 0)`),
                         'ISLIKED',
                     ],
                     "createdAt",
@@ -302,49 +368,35 @@ class postServices {
             }
         }
     }
-    async updatePost(id, caption, images) {
+    async updatePost(id, caption, images, deletedImages) {
+
         try {
-            // const post = await db.POST.findByPk(id)
-            // return {
-            //     code: StatusCodes.CREATED,
-            //     status: ReasonPhrases.CREATED,
-            //     message: "",
-            //     result: null
-            // }
-            try {
-                await sequelize.transaction(async t => {
-                    const post = await db.POST.findByPk(id)
-                    post.CAPTION = caption
-                    await db.POST_IMAGE.destroy({
-                        where: {
-                            POST_ID: id
-                        }
-                    })
-                    await db.POST_IMAGE.bulkCreate(images, { transaction: t })
-                    await post.save()
+            await sequelize.transaction(async t => {
+                const post = await db.POST.findByPk(id)
+                post.CAPTION = caption
+                await db.POST_IMAGE.destroy({
+                    where: {
+                        ID: deletedImages
+                    }
                 })
-                return {
-                    code: StatusCodes.OK,
-                    status: ReasonPhrases.OK,
-                    message: "",
-                    result: null
-                }
-            } catch (error) {
-                return {
-                    code: StatusCodes.SERVICE_UNAVAILABLE,
-                    status: ReasonPhrases.SERVICE_UNAVAILABLE,
-                    message: error.message,
-                    result: null
-                }
-            }
-        } catch (error) {
+                await db.POST_IMAGE.bulkCreate(images, { transaction: t })
+                await post.save()
+            })
             return {
-                code: StatusCodes.INTERNAL_SERVER_ERROR,
-                status: ReasonPhrases.INTERNAL_SERVER_ERROR,
+                code: StatusCodes.OK,
+                status: ReasonPhrases.OK,
                 message: "",
                 result: null
             }
+        } catch (error) {
+            return {
+                code: StatusCodes.SERVICE_UNAVAILABLE,
+                status: ReasonPhrases.SERVICE_UNAVAILABLE,
+                message: error.message,
+                result: null
+            }
         }
+
     }
 }
 

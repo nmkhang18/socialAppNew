@@ -49,9 +49,10 @@ class postController {
         }
 
     }
-    async updatePost(req, res) {
+    async updatePost(req, res, next) {
         try {
             let images = []
+            const deletedImages = JSON.parse(req.body.deletedImages)
             if (req.files) {
                 console.log(req.files.file);
                 if (typeof (req.files.file.length) == "number") {
@@ -63,7 +64,7 @@ class postController {
                             message: "File must be image",
                             result: null
                         })
-                        images.push({ IMAGE: await uploadDrive(req.files.file[i].data), POST_ID: id })
+                        images.push({ IMAGE: await uploadDrive(req.files.file[i].data), POST_ID: req.params.id })
                     }
                 } else {
                     if (req.files.file.mimetype.split('/')[0] != "image" && req.files.file.mimetype.split('/')[0] != "multipart") return res.json({
@@ -72,11 +73,10 @@ class postController {
                         message: "File must be image",
                         result: null
                     })
-                    images.push({ IMAGE: await uploadDrive(req.files.file.data), POST_ID: id })
+                    images.push({ IMAGE: await uploadDrive(req.files.file.data), POST_ID: req.params.id })
                 }
             }
-            // const result = await postServices.savePost(post, images)
-            const result = await postServices.updatePost(req.params.id, req.body.caption, images)
+            const result = await postServices.updatePost(req.params.id, req.body.caption, images, deletedImages)
 
             // return res.status(result.code).json(result)
             return res.json(result)
@@ -136,6 +136,15 @@ class postController {
     async getPostByUser(req, res) {
         try {
             const result = await postServices.getPostByUser(req.params.user_id)
+            // return res.status(result.code).json(result)
+            return res.json(result)
+        } catch (error) {
+            next(error)
+        }
+    }
+    async getPostDetail(req, res) {
+        try {
+            const result = await postServices.getPostDetail(req.params.post_id)
             // return res.status(result.code).json(result)
             return res.json(result)
         } catch (error) {
