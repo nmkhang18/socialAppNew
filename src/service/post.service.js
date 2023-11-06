@@ -58,7 +58,7 @@ class postServices {
                     {
                         model: db.POST_IMAGE,
                         required: false,
-                        attributes: ["IMAGE"]
+                        attributes: ["ID", "IMAGE"]
                     },
                     {
                         model: db.USER,
