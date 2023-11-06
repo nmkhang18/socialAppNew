@@ -400,18 +400,33 @@ class postServices {
 
     }
     async deletePost(id) {
-        await sequelize.transaction(async t => {
-            await db.POST.destroy({
-                where: {
-                    ID: id
-                }
+        try {
+            await sequelize.transaction(async t => {
+                await db.POST.destroy({
+                    where: {
+                        ID: id
+                    }
+                })
+                await db.POST_IMAGE.destroy({
+                    where: {
+                        POST_ID: id
+                    }
+                })
             })
-            await db.POST_IMAGE.destroy({
-                where: {
-                    POST_ID: id
-                }
-            })
-        })
+            return {
+                code: StatusCodes.OK,
+                status: ReasonPhrases.OK,
+                message: "",
+                result: null
+            }
+        } catch (error) {
+            return {
+                code: StatusCodes.SERVICE_UNAVAILABLE,
+                status: ReasonPhrases.SERVICE_UNAVAILABLE,
+                message: error.message,
+                result: null
+            }
+        }
     }
 
 }
