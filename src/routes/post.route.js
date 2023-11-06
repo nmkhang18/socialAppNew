@@ -29,7 +29,7 @@ router.put('/:id', authencation.login, postMiddleware.isAuthor, postController.u
 
 
 //DELETE
-router.delete('/:id', postController.deletePost)
+router.delete('/:id', authencation.login, postMiddleware.isAuthor, postController.deletePost)
 
 
 module.exports = router

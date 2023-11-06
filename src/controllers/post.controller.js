@@ -85,7 +85,12 @@ class postController {
         }
     }
     async deletePost(req, res) {
-
+        try {
+            const result = await postServices.deletePost(req.params.id)
+            return res.json(result)
+        } catch (error) {
+            next(error)
+        }
     }
     async likePost(req, res) {
         try {

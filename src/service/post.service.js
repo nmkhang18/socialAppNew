@@ -399,6 +399,21 @@ class postServices {
         }
 
     }
+    async deletePost(id) {
+        await sequelize.transaction(async t => {
+            await db.POST.destroy({
+                where: {
+                    ID: id
+                }
+            })
+            await db.POST_IMAGE.destroy({
+                where: {
+                    POST_ID: id
+                }
+            })
+        })
+    }
+
 }
 
 module.exports = new postServices
