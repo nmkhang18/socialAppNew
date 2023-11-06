@@ -402,16 +402,17 @@ class postServices {
     async deletePost(id) {
         try {
             await sequelize.transaction(async t => {
-                await db.POST.destroy({
-                    where: {
-                        ID: id
-                    }
-                })
                 await db.POST_IMAGE.destroy({
                     where: {
                         POST_ID: id
                     }
                 })
+                await db.POST.destroy({
+                    where: {
+                        ID: id
+                    }
+                })
+
             })
             return {
                 code: StatusCodes.OK,
