@@ -11,7 +11,7 @@ class notiServices {
             const result = await db.NOTIFICATION.findAll({
                 include: {
                     model: db.USER,
-                    attributes: ["USERNAME", "AVATAR"],
+                    attributes: ["USERNAME", "AVATAR", "ID"],
                     require: true
                 },
                 where: {
