@@ -2,7 +2,7 @@ const db = require('../models/index')
 const Sequelize = require('sequelize')
 const validator = require('../validations/user.validator')
 const userServices = require('../service/user.service')
-const notiDTO = require('../service/noti.service')
+const notiServices = require('../service/noti.service')
 const { uploadDrive } = require('../helpers/helpers')
 const bcrypt = require('bcryptjs')
 
@@ -115,11 +115,18 @@ class controller {
         // })
         // try {
         //     const result = await userServices.getNoti(req.user._id)
-        return res.status(result.code).json(result)
-        return res.json(result)
+        // return res.status(result.code).json(result)
+        // return res.json(result)
         // } catch (error) {
         //     next(error)
         // }
+        try {
+            const result = await notiServices.getNoti(req.user._id)
+            // return res.status(result.code).json(result)
+            return res.json(result)
+        } catch (error) {
+            next(error)
+        }
     }
 }
 

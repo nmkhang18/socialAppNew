@@ -4,32 +4,8 @@ const { sequelize } = require('../models/index')
 const Op = Sequelize.Op
 const { otpTimeOut, sendEmail } = require('../helpers/helpers')
 
-class dto {
-    async createNoti(noti) {
-        try {
-            await db.NOTIFICATION.create(noti)
-            return 1
-        } catch (error) {
-            console.log(error.message);
-            return 0
-        }
-    }
-    async deleteNoti(id1, id2, type) {
-        try {
-            const result = await db.NOTIFICATION.findOne({
-                where: {
-                    R_USER_ID: id1,
-                    USER_ID: id2,
-                    TYPE: type
-                }
-            })
-            await result.destroy()
-            return 1
-        } catch (error) {
-            console.log(error.message);
-            return 0
-        }
-    }
+class notiServices {
+
     async getNoti(id) {
         try {
             const result = await db.NOTIFICATION.findAll({
@@ -45,13 +21,23 @@ class dto {
                     ['createdAt', 'DESC'],
                 ],
             })
-
-            return result
+            return {
+                code: StatusCodes.CREATED,
+                status: ReasonPhrases.CREATED,
+                message: "",
+                result: {
+                    notifications: result
+                }
+            }
         } catch (error) {
-            console.log(error.message);
-            return 0
+            return {
+                code: StatusCodes.SERVICE_UNAVAILABLE,
+                status: ReasonPhrases.SERVICE_UNAVAILABLE,
+                message: error.message,
+                result: null
+            }
         }
     }
 }
 
-module.exports = new dto
+module.exports = new notiServices
