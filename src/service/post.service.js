@@ -407,6 +407,21 @@ class postServices {
                         POST_ID: id
                     }
                 })
+                await db.COMMENT.destroy({
+                    where: {
+                        POST_ID: id
+                    }
+                })
+                await db.LIKE.destroy({
+                    where: {
+                        POST_ID: id
+                    }
+                })
+                await db.NOTIFICATION.destroy({
+                    where: {
+                        POST_ID: id
+                    }
+                })
                 await db.POST.destroy({
                     where: {
                         ID: id
