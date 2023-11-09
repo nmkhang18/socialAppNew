@@ -164,7 +164,6 @@ class postServices {
                 }
             })
             sockets.forEach(element => {
-                let tmpMess = createdMessege
                 global._io.to(element.dataValues.SOCKET_ID).emit("like", {
                     USER_ID: user_id,
                     POST_ID: post_id
