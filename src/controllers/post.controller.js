@@ -84,7 +84,7 @@ class postController {
             next(error)
         }
     }
-    async deletePost(req, res) {
+    async deletePost(req, res, next) {
         try {
             const result = await postServices.deletePost(req.params.id)
             return res.json(result)
@@ -92,7 +92,7 @@ class postController {
             next(error)
         }
     }
-    async likePost(req, res) {
+    async likePost(req, res, next) {
         try {
             const result = await postServices.likePost(req.user._id, req.params.id)
             // return res.status(result.code).json(result)
@@ -101,7 +101,7 @@ class postController {
             next(error)
         }
     }
-    async unlikePost(req, res) {
+    async unlikePost(req, res, next) {
         try {
             const result = await postServices.unlikePost(req.user._id, req.params.id)
             // return res.status(result.code).json(result)
@@ -129,7 +129,7 @@ class postController {
             next(error)
         }
     }
-    async getComment(req, res) {
+    async getComment(req, res, next) {
         try {
             const result = await postServices.getComment(req.params.post_id)
             // return res.status(result.code).json(result)
@@ -138,7 +138,7 @@ class postController {
             next(error)
         }
     }
-    async getPostByUser(req, res) {
+    async getPostByUser(req, res, next) {
         try {
             const result = await postServices.getPostByUser(req.params.user_id, req.user._id)
             // return res.status(result.code).json(result)
@@ -147,7 +147,7 @@ class postController {
             next(error)
         }
     }
-    async getPostDetail(req, res) {
+    async getPostDetail(req, res, next) {
         try {
             const result = await postServices.getPostDetail(req.params.post_id)
             // return res.status(result.code).json(result)

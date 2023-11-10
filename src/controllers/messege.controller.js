@@ -5,7 +5,7 @@ const { createId, uploadDrive } = require('../helpers/helpers')
 
 
 class messegeController {
-    async getConv(req, res) {
+    async getConv(req, res, next) {
         try {
             const result = await messageServices.getConv(req.user._id)
             // return res.status(result.code).json(result)
@@ -64,7 +64,7 @@ class messegeController {
             next(error)
         }
     }
-    async deleteMessege(req, res) {
+    async deleteMessege(req, res, next) {
 
     }
 }
