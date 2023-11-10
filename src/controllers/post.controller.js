@@ -140,7 +140,7 @@ class postController {
     }
     async getPostByUser(req, res) {
         try {
-            const result = await postServices.getPostByUser(req.params.user_id)
+            const result = await postServices.getPostByUser(req.params.user_id, req.user._id)
             // return res.status(result.code).json(result)
             return res.json(result)
         } catch (error) {

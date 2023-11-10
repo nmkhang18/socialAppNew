@@ -295,7 +295,7 @@ class postServices {
             }
         }
     }
-    async getPostByUser(userId, offset, limit) {
+    async getPostByUser(userId, crrUser) {
         try {
             const result = await db.POST.findAll({
                 include: [
@@ -342,7 +342,7 @@ class postServices {
                         'COMMENTS',
                     ],
                     [
-                        sequelize.literal(`COALESCE((SELECT COUNT("LIKE"."POST_ID") FROM "LIKE" WHERE "LIKE"."POST_ID" = "POST"."ID" AND "LIKE"."USER_ID" = '${userId}' GROUP BY "POST"."ID"), 0)`),
+                        sequelize.literal(`COALESCE((SELECT COUNT("LIKE"."POST_ID") FROM "LIKE" WHERE "LIKE"."POST_ID" = "POST"."ID" AND "LIKE"."USER_ID" = '${crrUser}' GROUP BY "POST"."ID"), 0)`),
                         'ISLIKED',
                     ],
                     "createdAt",
