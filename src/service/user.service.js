@@ -214,7 +214,7 @@ class userServices {
                 status: ReasonPhrases.OK,
                 message: "",
                 result: {
-                    user: result
+                    users: result
                 }
             }
         } catch (error) {
