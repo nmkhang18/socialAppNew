@@ -218,9 +218,9 @@ class postServices {
         try {
             const post = await db.POST.findByPk(cmt.POST_ID)
             await db.COMMENT.create(cmt)
-            await db.NOTIFICATION.create({ USER_ID: user_id, R_USER_ID: post.CREATED_BY_USER_ID, POST_ID: cmt.POST_ID, TYPE: "comment" })
+            await db.NOTIFICATION.create({ USER_ID: cmt.CREATED_BY, R_USER_ID: post.CREATED_BY_USER_ID, POST_ID: cmt.POST_ID, TYPE: "comment" })
             if (cmt.COMMENT_REPLIED_TO) {
-                await db.NOTIFICATION.create({ USER_ID: user_id, R_USER_ID: cmt.COMMENT_REPLIED_TO, POST_ID: cmt.POST_ID, TYPE: "comment" })
+                await db.NOTIFICATION.create({ USER_ID: cmt.CREATED_BY, R_USER_ID: cmt.COMMENT_REPLIED_TO, POST_ID: cmt.POST_ID, TYPE: "comment" })
             }
             let sockets = await db.USER_SOCKET.findAll({
                 where: {
@@ -241,6 +241,7 @@ class postServices {
                 result: null
             }
         } catch (error) {
+            console.log(error);
             return {
                 code: StatusCodes.INTERNAL_SERVER_ERROR,
                 status: ReasonPhrases.INTERNAL_SERVER_ERROR,
