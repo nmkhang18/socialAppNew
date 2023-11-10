@@ -9,7 +9,7 @@ const router = express.Router()
 
 //GET
 router.get('/comment/:post_id', authencation.login, postController.getComment)
-router.get('/user/:user_id', postController.getPostByUser)
+router.get('/user/:user_id', authencation.login, postController.getPostByUser)
 router.get('/detail/:post_id', authencation.login, postController.getPostDetail)
 
 
