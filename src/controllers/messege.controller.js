@@ -19,7 +19,7 @@ class messegeController {
             const id = createId()
 
             const result = await messageServices.createConv(id, [{ CONVERSATION_ID: id, USER_ID: req.user._id }, { CONVERSATION_ID: id, USER_ID: req.params.id }])
-            if (result.status == "CREATED") return res.redirect(`/api/messege/${id}?page=0&offset=0`)
+            if (result.code == 201) return res.redirect(`/api/messege/${id}?page=0&offset=0`)
             // return res.status(result.code).json(result)
             return res.json(result)
         } catch (error) {
