@@ -34,6 +34,7 @@ class messageServices {
                 status: ReasonPhrases.OK,
                 message: "",
                 result: {
+                    conversation_id: id,
                     messeges: result
                 }
             }
