@@ -26,7 +26,6 @@ class messageServices {
             result = result.map(e => {
                 if (e.dataValues.SEND_USER_ID == user_id) e.dataValues.IS_SEND_USER = 1
                 else e.dataValues.IS_SEND_USER = 0
-                console.log(e);
                 return e
             })
             return {
@@ -86,7 +85,6 @@ class messageServices {
                 result: null
             }
         } catch (error) {
-            console.log(error);
             return {
                 code: StatusCodes.SERVICE_UNAVAILABLE,
                 status: ReasonPhrases.SERVICE_UNAVAILABLE,

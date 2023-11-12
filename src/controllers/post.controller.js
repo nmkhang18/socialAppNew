@@ -19,7 +19,6 @@ class postController {
             }
             let images = []
             if (req.files) {
-                console.log(req.files.file);
                 if (typeof (req.files.file.length) == "number") {
 
                     for (let i = 0; i < req.files.file.length; i++) {
@@ -54,7 +53,6 @@ class postController {
             let images = []
             const deletedImages = JSON.parse(req.body.deletedImages)
             if (req.files) {
-                console.log(req.files.file);
                 if (typeof (req.files.file.length) == "number") {
 
                     for (let i = 0; i < req.files.file.length; i++) {
@@ -121,9 +119,7 @@ class postController {
             }
             if (req.params.comment_id) {
                 cmt.COMMENT_REPLIED_TO = req.params.comment_id
-                // console.log(req.params.comment_id);
             }
-            // console.log(cmt.COMMENT_REPLIED_TO);
             const result = await postServices.comment(cmt)
             // return res.status(result.code).json(result)
             return res.json(result)

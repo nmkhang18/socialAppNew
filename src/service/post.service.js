@@ -248,7 +248,6 @@ class postServices {
                 result: null
             }
         } catch (error) {
-            console.log(error);
             return {
                 code: StatusCodes.INTERNAL_SERVER_ERROR,
                 status: ReasonPhrases.INTERNAL_SERVER_ERROR,
@@ -367,7 +366,6 @@ class postServices {
                 }
             }
         } catch (error) {
-            console.log(error);
             return {
                 code: StatusCodes.INTERNAL_SERVER_ERROR,
                 status: ReasonPhrases.INTERNAL_SERVER_ERROR,

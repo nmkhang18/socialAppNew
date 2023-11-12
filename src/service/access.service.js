@@ -120,7 +120,6 @@ class accessServices {
     async verifyOTP({ email, otp }) {
         try {
             const checkOTP = await otpSchema.find({ email }).lean()
-            console.log(checkOTP[checkOTP.length - 1]);
             if (!bcrypt.compareSync(otp, checkOTP.length > 0 ? checkOTP[checkOTP.length - 1].otp : "0")) return {
                 code: StatusCodes.NON_AUTHORITATIVE_INFORMATION,
                 status: ReasonPhrases.NON_AUTHORITATIVE_INFORMATION,
@@ -150,7 +149,6 @@ class accessServices {
                     EMAIL: email
                 }
             })
-            console.log(checkMail);
             if (checkMail && type == "regist") return {
                 code: StatusCodes.CONFLICT,
                 status: ReasonPhrases.CONFLICT,
@@ -168,7 +166,6 @@ class accessServices {
                 email: email,
                 otp: optDetail.hashOtp,
             })
-            console.log(optDetail);
             sendEmail(email, optDetail.otp)
             return {
                 code: StatusCodes.OK,
@@ -202,7 +199,6 @@ class accessServices {
             })
             const salt = await bcrypt.genSaltSync(10)
             const hashPassword = await bcrypt.hash(password, salt)
-            console.log(result);
             result.PASSWORD = hashPassword
             await result.save()
             return {
