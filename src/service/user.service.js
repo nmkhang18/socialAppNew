@@ -99,6 +99,18 @@ class userServices {
                 FOLLOWING_USER_ID: user_id,
                 FOLLOWED_USER_ID: followed_user_id
             })
+
+            let sockets = await db.USER_SOCKET.findAll({
+                where: {
+                    USER_ID: followed_user_id,
+                }
+            })
+            sockets.forEach(element => {
+                global._io.to(element.dataValues.SOCKET_ID).emit("follow", {
+                    USER_ID: followed_user_id
+                });
+            });
+
             return {
                 code: StatusCodes.OK,
                 status: ReasonPhrases.OK,
