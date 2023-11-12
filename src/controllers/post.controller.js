@@ -10,6 +10,12 @@ const notiDTO = require('../service/noti.service')
 
 class postController {
     async createPost(req, res, next) {
+        if (!req.body.caption && req.files) return res.json({
+            code: 406,
+            status: "NOT_ACCEPTABLE",
+            message: "",
+            result: null
+        })
         try {
             const id = createId()
             const post = {
