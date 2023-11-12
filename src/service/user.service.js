@@ -105,6 +105,7 @@ class userServices {
                 FOLLOWING_USER_ID: user_id,
                 FOLLOWED_USER_ID: followed_user_id
             })
+            await db.NOTIFICATION.create({ USER_ID: user_id, R_USER_ID: followed_user_id, POST_ID: "", TYPE: "follow" })
 
             let sockets = await db.USER_SOCKET.findAll({
                 where: {
@@ -113,7 +114,7 @@ class userServices {
             })
             sockets.forEach(element => {
                 global._io.to(element.dataValues.SOCKET_ID).emit("follow", {
-                    USER_ID: followed_user_id
+                    USER_ID: user_id
                 });
             });
 
