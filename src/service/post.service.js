@@ -218,7 +218,7 @@ class postServices {
         try {
             const post = await db.POST.findByPk(cmt.POST_ID)
             await db.COMMENT.create(cmt)
-            if (user_id != post.CREATED_BY_USER_ID) {
+            if (cmt.CREATED_BY != post.CREATED_BY_USER_ID) {
                 await db.NOTIFICATION.create({ USER_ID: cmt.CREATED_BY, R_USER_ID: post.CREATED_BY_USER_ID, POST_ID: cmt.POST_ID, TYPE: "comment" })
             }
             if (cmt.COMMENT_REPLIED_TO) {
