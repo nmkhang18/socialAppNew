@@ -222,9 +222,9 @@ class postServices {
                 await db.NOTIFICATION.create({ USER_ID: cmt.CREATED_BY, R_USER_ID: post.CREATED_BY_USER_ID, POST_ID: cmt.POST_ID, TYPE: "comment" })
             }
             if (cmt.COMMENT_REPLIED_TO) {
-                await db.NOTIFICATION.create({ USER_ID: cmt.CREATED_BY, R_USER_ID: cmt.COMMENT_REPLIED_TO, POST_ID: cmt.POST_ID, TYPE: "comment" })
+                await db.NOTIFICATION.create({ USER_ID: cmt.CREATED_BY, R_USER_ID: cmt.COMMENT_REPLIED_TO, POST_ID: cmt.POST_ID, TYPE: "r_comment" })
             }
-            console.log(post.CREATED_BY_USER_ID);
+            console.log(cmt.COMMENT_REPLIED_TO);
             let sockets = await db.USER_SOCKET.findAll({
                 where: {
                     // [Op.or]: {
@@ -235,7 +235,6 @@ class postServices {
                     USER_ID: [post.CREATED_BY_USER_ID, cmt.COMMENT_REPLIED_TO ? cmt.COMMENT_REPLIED_TO : "-1"]
                 }
             })
-            console.log(sockets);
             sockets.forEach(element => {
                 global._io.to(element.dataValues.SOCKET_ID).emit("comment", cmt);
             });
