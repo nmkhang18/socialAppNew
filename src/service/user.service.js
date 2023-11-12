@@ -94,6 +94,12 @@ class userServices {
         }
     }
     async follow(user_id, followed_user_id) {
+        if (user_id == followed_user_id) return {
+            code: StatusCodes.NOT_ACCEPTABLE,
+            status: ReasonPhrases.NOT_ACCEPTABLE,
+            message: "",
+            result: null
+        }
         try {
             await db.FOLLOWER.create({
                 FOLLOWING_USER_ID: user_id,
