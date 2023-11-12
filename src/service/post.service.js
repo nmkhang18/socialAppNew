@@ -217,14 +217,16 @@ class postServices {
     async comment(cmt) {
         try {
             const post = await db.POST.findByPk(cmt.POST_ID)
+            let lstUser = [post.CREATED_BY_USER_ID]
             await db.COMMENT.create(cmt)
             if (cmt.CREATED_BY != post.CREATED_BY_USER_ID) {
                 await db.NOTIFICATION.create({ USER_ID: cmt.CREATED_BY, R_USER_ID: post.CREATED_BY_USER_ID, POST_ID: cmt.POST_ID, TYPE: "comment" })
             }
             if (cmt.COMMENT_REPLIED_TO) {
-                await db.NOTIFICATION.create({ USER_ID: cmt.CREATED_BY, R_USER_ID: cmt.COMMENT_REPLIED_TO, POST_ID: cmt.POST_ID, TYPE: "r_comment" })
+                const p_cmt = await db.COMMENT.findByPk(cmt.COMMENT_REPLIED_TO)
+                await db.NOTIFICATION.create({ USER_ID: cmt.CREATED_BY, R_USER_ID: p_cmt.CREATED_BY, POST_ID: cmt.POST_ID, TYPE: "r_comment" })
+                lstUser.push(p_cmt.CREATED_BY)
             }
-            console.log(cmt.COMMENT_REPLIED_TO);
             let sockets = await db.USER_SOCKET.findAll({
                 where: {
                     // [Op.or]: {
@@ -232,11 +234,12 @@ class postServices {
                     //     USER_ID: cmt.COMMENT_REPLIED_TO ? cmt.COMMENT_REPLIED_TO : "-1"
 
                     // }
-                    USER_ID: [post.CREATED_BY_USER_ID, cmt.COMMENT_REPLIED_TO ? cmt.COMMENT_REPLIED_TO : "-1"]
+                    USER_ID: lstUser
                 }
             })
             sockets.forEach(element => {
-                global._io.to(element.dataValues.SOCKET_ID).emit("comment", cmt);
+                if (element.dataValues.USER_ID == post.CREATED_BY_USER_ID) global._io.to(element.dataValues.SOCKET_ID).emit("comment", cmt);
+                else global._io.to(element.dataValues.SOCKET_ID).emit("r_comment", cmt);
             });
             return {
                 code: StatusCodes.CREATED,

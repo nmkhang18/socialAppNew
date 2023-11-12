@@ -121,7 +121,9 @@ class postController {
             }
             if (req.params.comment_id) {
                 cmt.COMMENT_REPLIED_TO = req.params.comment_id
+                // console.log(req.params.comment_id);
             }
+            // console.log(cmt.COMMENT_REPLIED_TO);
             const result = await postServices.comment(cmt)
             // return res.status(result.code).json(result)
             return res.json(result)
